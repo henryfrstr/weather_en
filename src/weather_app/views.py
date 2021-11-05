@@ -1,5 +1,5 @@
 from os import name
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 import requests
 from decouple import config
 from pprint import pprint
@@ -12,9 +12,6 @@ def home(request):
     url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=metric"
     # city = "İstanbul"
     # response = requests.get(url.format(city, config("API_KEY"))).json()
-    a = {
-        "a": "henry"
-    }
     g_city = request.GET.get('city')  # GET/POST/DELETE/PUT
     print("g_city: ", g_city)
     if g_city:
@@ -30,6 +27,7 @@ def home(request):
                 messages.success(request, "City succesfully created.")
         else:
             messages.warning(request, "City does not exits.")
+        return redirect('home')
     city_data = []
     for city in cities:
         # print(city)
@@ -48,3 +46,10 @@ def home(request):
         "city_data": city_data
     }
     return render(request, "weather_app/home.html", context)
+
+
+def delte_city(request, id):
+    city = get_object_or_404(City, id=id)
+    city.delete()
+    messages.success(request, "City succefully delted.")
+    return redirect('home')

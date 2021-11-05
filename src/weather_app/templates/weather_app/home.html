@@ -7,6 +7,15 @@
     <title>Document</title>
 </head>
 <body>
+
+    
+    {% if messages %}        
+        {% for message in messages %}
+        {{message}}         
+        {% endfor %}           
+    {% endif %}
+        
+
     <h1>Weather App</h1>
     <br>
     
@@ -19,7 +28,8 @@
         {{ city.city.name}} <br>
         {{ city.temp}} <span>&#8451;</span> <br>
         <img src="http://openweathermap.org/img/w/{{ city.icon }}.png" alt="icon"><br>
-        {{ city.desc}} <br> <hr>
+        {{ city.desc}} <br> 
+        <button><a href="{% url 'delete' city.city.id %}">Delete</a></button> <br> <hr>
     {% endfor %}
         
 </body>
